@@ -31,9 +31,9 @@ def on_message(client, userdata, message):
         led.off()
 
 
-
+print("Subscribing to MQTT")
 mqttc.on_message = on_message
 mqttc.subscribe("notification/mail")
 
-
+print("Ready")
 mqttc.loop_forever()
