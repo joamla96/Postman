@@ -72,7 +72,7 @@ sleep(0.75)
 hx.reset()
 hx.tare()
 
-print("Tare done! Add weight now...")
+print("Tare done!")
 
 while true:
     # noinspection PyBroadException
