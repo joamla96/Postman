@@ -15,7 +15,7 @@ led = LED(18)
 
 print("Connecting MQTT")
 mqttc = mqtt.Client("Pi")
-mqttc.username_pw_set(username="DAeAD91yDJJrGk9TyQPyTr2rXcfrxQf0fjoIid6KMDZiNZ0aDFykWqBHqGZNl4Cq", password="")
+mqttc.username_pw_set(username="3cY4r0MKIpKyAlkQLnoVgBzWJAKAoB7hDT9SHMqgZ0CpaK4LXiu3HTPhhpHtODyf", password="")
 
 mqttc.connect("mqtt.flespi.io", 1883)
 
