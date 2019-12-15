@@ -2,6 +2,7 @@ from time import sleep
 import paho.mqtt.client as mqtt
 from signal import pause
 import RPi.GPIO as GPIO
+from gpiozero import LED
 from hx711 import HX711
 import time
 import sys
@@ -9,6 +10,11 @@ import sys
 # because fuck python
 true = True
 false = False
+
+ledBlue = LED(17)
+ledRed = LED(16)
+
+leds = {ledBlue, ledRed }
 
 # HOW TO CALCULATE THE REFFERENCE UNIT
 # To set the reference unit to 1. Put 1kg on your sensor or anything you have and know exactly how much it weights.
@@ -23,6 +29,12 @@ debug = true
 
 print("Initializing...")
 
+print("Check LEDs")
+for led in leds:
+    led.on()
+    sleep(2)
+    led.off()
+
 print("Connecting MQTT")
 mqttc = mqtt.Client("Pi")
 mqttc.username_pw_set(username="DAeAD91yDJJrGk9TyQPyTr2rXcfrxQf0fjoIid6KMDZiNZ0aDFykWqBHqGZNl4Cq", password="")
@@ -31,14 +43,17 @@ mqttc.connect("mqtt.flespi.io", 1883)
 
 print("Defining Behavior")
 def sensorWeight(value):
+    ledBlue.on()
     value = value * -1 # Flip the value, because we put the sensor reverse
     if debug:
         print("[DEBUG] Pulled weight, publishing " + str(value))
 
     mqttc.publish("sensor/weight", value, 0)
 
+
     if debug:
         print("[Debug] Published")
+    ledBlue.off()
 
 def cleanAndExit():
     print("Shutting down MQTT")
@@ -46,7 +61,8 @@ def cleanAndExit():
     mqttc.disconnect()
 
     print("Cleaning...")
-    GPIO.cleanup()
+    for led in leds:
+        led.close()
 
     print("Bye!")
     sys.exit()
@@ -96,4 +112,8 @@ while true:
 
     except Exception:
         mqttc.publish("sensor/weight", "dead", 0)
-        cleanAndExit()
+        while true:
+            ledRed.on()
+            time.sleep(2)
+            led.off()
+            time.sleep(1)
