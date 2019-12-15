@@ -53,6 +53,7 @@ def sensorWeight(value):
 
     if debug:
         print("[Debug] Published")
+    sleep(1)
     ledBlue.off()
 
 def cleanAndExit():
