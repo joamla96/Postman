@@ -56,6 +56,7 @@ def sensorWeight(value):
     ledBlue.off()
 
 def cleanAndExit():
+    ledRed.on()
     print("Shutting down MQTT")
     mqttc.publish("sensor/weight", "shutdown", 0)
     mqttc.disconnect()
