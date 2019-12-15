@@ -29,7 +29,7 @@ mqttc.username_pw_set(username="DAeAD91yDJJrGk9TyQPyTr2rXcfrxQf0fjoIid6KMDZiNZ0a
 
 mqttc.connect("mqtt.flespi.io", 1883)
 
-print("Defining Button's Behavior")
+print("Defining Behavior")
 def sensorWeight(value):
     value = value * -1 # Flip the value, because we put the sensor reverse
     if debug:
@@ -41,8 +41,13 @@ def sensorWeight(value):
         print("[Debug] Published")
 
 def cleanAndExit():
+    print("Shutting down MQTT")
+    mqttc.publish("sensor/weight", "shutdown", 0)
+    mqttc.disconnect()
+
     print("Cleaning...")
     GPIO.cleanup()
+
     print("Bye!")
     sys.exit()
 
